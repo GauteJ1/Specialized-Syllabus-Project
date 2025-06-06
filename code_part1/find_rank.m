@@ -1,23 +1,26 @@
 function find_rank()
+% Finding rank of 
     rng(1) % Reproducability
 
-    % Load data
+    %% Load data
     load("/home/gautejohannessen/Documents/SpesPensum/Specialized-Syllabus-Project/data/EEM_NMR_LCMS.mat", 'X');
     X_structure = X;
     X = X_structure.data;
     X = tensor(X);
 
-    % Create weights
+    %% Create weights
     mask = ~isnan(double(X));
     P = tensor(double(mask));
 
     rel_f_list = [];
     relfits_list = [];
 
+    %% Run model for ranks 1 to 5
     for r = 1:5
         best_rel_f = 1e20;
         best_relift = 0;
-
+        
+        % Fit 20 times each rank and keep the best model
         for i = 1:20
             M_init = create_guess('Data', X, 'Num_Factors', r);
 
@@ -39,6 +42,7 @@ function find_rank()
         relfits_list(end + 1) = relfits;
     end
 
+    %% Print RelFit and loss relative to rank 1 loss for each rank
     for r = 1:5
         disp(r);
         disp(rel_f_list(r));

@@ -1,4 +1,5 @@
 function output = relfit(X, M)
+% Implementation of the relfit function
     X_array = double(X);
     X_array(isnan(X_array)) = 0;
     X = tensor(X_array);
