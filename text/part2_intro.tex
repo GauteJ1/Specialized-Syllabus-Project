@@ -1,4 +1,23 @@
+In this subsection we jointly analyze measurements from multiple sources, in order to reveal underlying patterns across them.
+The datasets consists of fluorescence spectroscopy EEMs $\mathcal{X} \in \mathbb{R}^{28 \times 251 \times 21}$, identical to part one, as well as nuclear magnetic resonance (NMR) spectroscopy $\mathcal{Y}\in \mathbb{R}^{28 \times 13324 \times 8}$ and liquid chromatography-mass spectrometry (LC-MS) measurements $\mathcal{Z} \in \mathbb{R}^{28 \times 168}$, all from the same 28 mixtures.
+
+We will jointly analyze the three datasets using the AOADMM Data Fusion Framework \cite{framework},
+
+\gaute{finish intro}
 
 
+\subsection*{Method}
+
+\gaute{explain 0 handling}
+As in part 1, we first need to handle the missing values in $\mathcal{X}$.
+We note that neither $\mathcal{Y}$ nor $\mathcal{Z}$ contain any missing values.
+
+\gaute{explain framework, optimization function}
 We pre
 \cite{framework}
+
+\gaute{Explain couplings}
+
+\gaute{mention multiple inits again}
+
+\gaute{mention uniqueness again}
