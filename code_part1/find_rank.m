@@ -38,14 +38,15 @@ function find_rank()
         rel_f = best_rel_f/first_f;
         relfits = best_relift;
 
-        rel_f_list(end + 1) = rel_f;
-        relfits_list(end + 1) = relfits;
+        rel_f_list = [rel_f_list; rel_f];
+        relfits_list = [relfits_list; relfits];
     end
 
-    %% Print RelFit and loss relative to rank 1 loss for each rank
-    for r = 1:5
-        disp(r);
-        disp(rel_f_list(r));
-        disp(relfits_list(r));
-    end
+    %% Save results to file
+    R = [1; 2; 3; 4; 5];
+    Loss = rel_f_list;
+    RelFit = relfits_list;
+    T = table(R, Loss, RelFit);
+    writetable(T, "../data/rank_results.txt");
+    type ../data/rank_results.txt;
 end

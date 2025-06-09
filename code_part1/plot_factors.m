@@ -39,5 +39,5 @@ function plot_factors(data)
     sgtitle("$R = " + string(rank) + "$", 'Interpreter', 'latex');
 
     filename = "../figures/factors_rank" + string(rank);
-    print(filename, '-dpdf');
+    print(filename, '-dpdf', '-fillpage');
 end

@@ -45,9 +45,10 @@ function run_model(rank)
     end
 
     %% Print scores of close to optimal models
+    disp("Match scores for almost equal models");
     for ii = 1:length(close_model_indices)
         i = close_model_indices(ii);
-
+        
         disp(score(models{best_index}, models{i}));
     end
 

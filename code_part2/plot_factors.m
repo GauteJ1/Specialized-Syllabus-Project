@@ -51,5 +51,5 @@ function plot_factors(data, plot_name)
     sgtitle(plot_name);
 
     filename = "../figures/factors_" + plot_name;
-    print(filename, '-dpdf');
+    print(filename, '-dpdf', '-fillpage');
 end

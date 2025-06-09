@@ -121,7 +121,7 @@ function decomp()
         init_fac = init_coupled_AOADMM_CMTF(ZZ,'init_options', init_options);
 
         %% Run algorithm
-        fprint("Run model %d", i);
+        fprintf("Run model %d \n", i);
         tic
         [Zhat,~,~,out] = cmtf_AOADMM(ZZ,'alg_options',options,'init',init_fac,'init_options',init_options); 
         toc
