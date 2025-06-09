@@ -5,6 +5,7 @@
 \usepackage{setspace}
 \usepackage{adjustbox}
 \usepackage{minted}
+\usepackage{biblatex}
 \newcommand{\half}{\frac{1}{2}}
 \newcommand{\xyz}{\begin{pmatrix}x\\y\\z\end{pmatrix}}
 \newcommand{\f}[1]{\mathbf{#1}}
@@ -24,6 +25,8 @@
 
 \newcommand{\gaute}[1]{{\color{red} #1}}
 
+\bibliography{references}
+
 
 \title{Tensor Factorizations Course Project}
 \author{Gaute Johannessen}
@@ -33,13 +36,18 @@
 \newenvironment{exercise}[2][Exercise]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
 
-\begin{document}
 
+\begin{document}
 \maketitle
-\section{Part 1}
+
+\section*{Part 1}
 \input{text/part1_intro}
 \input{text/part1_results}
 
-\section{Part 2}
+\section*{Part 2}
+\input{text/part2_intro}
+\input{text/part2_results}
+
+\printbibliography
 \end{document}
 

@@ -1,0 +1,29 @@
+In this part we analyze a third-order tensor using a CP-model.
+
+
+\subsection*{Method}
+
+We fit the CP model to the data using the \texttt{cp\_wopt} function from the Tensor Toolbox \cite{tentool}.
+The reason we have selected this function, is due to the data having missing values.
+Indeed, the function allows us to pass a weight matrix $W$ as an argument, where we define $W$ as in (\ref{eq:weight_matrix}).
+We use this weight matrix to define the loss function for our optimization problem.
+
+
+
+\begin{equation}
+W_{i,j,k} = \begin{cases}
+    1 \ \text{if} \ X_{i,j,k} \ \text{is in the dataset,} \\
+    0 \ \text{if} \ X_{i,j,k} \ \text{is missing.}
+\end{cases}
+\label{eq:weight_matrix}
+\end{equation}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{c|c}
+         &  \\
+         & 
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
