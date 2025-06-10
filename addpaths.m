@@ -9,3 +9,5 @@ addpath(toolboxesdir + 'prox_repo/indicator/');
 addpath(toolboxesdir + 'AOADMM-DataFusionFramework/');
 addpath(toolboxesdir + 'AOADMM-DataFusionFramework/functions/');
 addpath(toolboxesdir + 'AOADMM-DataFusionFramework/functions_for_example_scripts/');
+
+addpath(toolboxesdir + 'poblano_toolbox/')
