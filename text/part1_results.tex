@@ -1,10 +1,14 @@
 \subsection*{Results and Discussion}
+As discussed in the previous section, we first find the optimal rank $R$ for the model.
+We did this by fitting 20 models with different random initializations for $R = 1,2,3,4,5$, and computing the loss and RelFit for the best model for each $R$.
+The results are shown in Table \ref{tab:rank_choice}.
+Note that the loss is relative to the loss of the best model for $R=1$.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|}
     \hline
-    R & Loss & RelFit \\
+    $R$ & Loss & RelFit \\
     \hline
     1 & 1 & 77.589 \\
     \hline
@@ -21,16 +25,27 @@
     \label{tab:rank_choice}
 \end{table}
 
-\gaute{discuss discovered rank}
+From Table \ref{tab:rank_choice}, we see that the loss is decreasing by a factor of $> 10$ for each $R$ until $R=3$, after which it decreases by a factor of $< 2$.
+Furthermore, the relative fit increases substantially from $R=1$ to $R=2$ and $R=2$ to $R=3$, after which the growth is significantly slower.
+Hence $R=3$ seems like a good choice of rank, and we use this for further analysis.
+Figure \ref{fig:plot_factors} confirms this choice, as we see that the factors for $R=3$ seems to represents three different chemicals, while for $R=4$, the red and green factor seems to both represent the same chemicals, as they are more or less identical in the emission and excitation modes.
 
-\gaute{discuss uniqueness results (all equal, not for r=4 though)}
+Next, we ran the model with $R = 3$ 20 times, saving all models.
+Comparing the models, we saw that all models reached the exact same loss, and all models when compared with the first model using the \texttt{score} function, achieved an FMS of 1.
+That is, all models regardless of initialization ended with the exact same fit, which demonstrate that the model reveals a unique set of factors.
+As a sanity check, we did the same analysis for $R=4$, where we only had 17 out of the 20 models within 2\% of the loss, and most models achieving an FMS of $<0.95$ when compared to the best model.
 
 \begin{figure}[H]
     \centering
     \includegraphics[trim = 2cm 2.5cm 2cm 1.9cm, clip, width=0.46\linewidth]{figures/factors_rank3.pdf}
     \includegraphics[trim = 2cm 2.5cm 2cm 1.9cm, clip, width=0.46\linewidth]{figures/factors_rank4.pdf}
-    \caption{\gaute{note that these factors are normalized}}
+    \caption{Plots of normalized factors for each mode from the best CP-model over 20 runs for $R=3$ (left) and $R=4$.}
     \label{fig:plot_factors}
 \end{figure}
 
-\gaute{Explain discovered factors}
+Lastly, we plotted the factors in each mode for the best model for $R=3$ and $R=4$, seen in Figure \ref{fig:plot_factors}.
+We plotted $R=4$ only to confirm our choice of $R$, as discussed above.
+For the $R=3$ plots, we see that the model seems to have discovered three different chemicals.
+The top left plot, the mixtures mode, represents the amount of each chemical in each of the 28 mixtures, while the plots below represent emission and excitation wavelengths for each chemical.
+It is expected that the top plot is less smooth than the two below, as there is no reason why the amount of each chemical in each mix should be a smooth function.
+For the wavelengths however, it is expected that the plot for each chemical is quite smooth.

@@ -1,11 +1,13 @@
 In this part we analyze a third-order tensor using a CP-model.
-Our dataset $\ten{X}\in \R^{28 \times 251 \times 21}$
-\gaute{Finish intro}
+Our dataset $\ten{X}\in \R^{28 \times 251 \times 21}$ represents measurements of mixtures measured using fluorescence spectroscopy.
+The three modes of the tensor represents the 28 mixtures in the first mode, emission wavelength in the second mode, and excitation wavelength in the third mode.
+We will use CP-models to reveal the number of chemicals in the mixtures, and find properties of the chemicals by plotting the discovered factors in the model.
+In addition to this, we will discuss the uniqueness of the CP-model, by comparing multiple models achieving similar losses.
 
 
 \subsection*{Background and Method}
 
-We fit the CP model to the data using the \texttt{cp\_wopt} function from the Tensor Toolbox \cite{tentool}.
+We fit the CP-model to the data using the \texttt{cp\_wopt} function from the Tensor Toolbox \cite{tentool}.
 The reason we have selected this function, is due to the data having missing values.
 Indeed, the function allows us to pass a weight tensor $\ten{W}$ as an argument, where we define $\ten{W}$ as in (\ref{eq:weight_matrix}).
 
@@ -24,7 +26,7 @@ Indeed, the function allows us to pass a weight tensor $\ten{W}$ as an argument,
 \end{equation}
 
 We use this weight matrix to define the expression we want to optimize, described in (\ref{eq:cp}).
-This is the same description of the CP model as used in \textcite{tensor-review}, with the added weight tensor for handling the missing data, described in \textcite{cp-wopt}.
+This is the same description of the CP-model as used in \textcite{tensor-review}, with the added weight tensor for handling the missing data, described in \textcite{cp-wopt}.
 In (\ref{eq:cp}), the norm used is the Frobenius norm for tensors, $*$ denotes the element-wise Hadamard product, and $\circ$ denotes an outer vector product.
 This weight matrix formulation allows us to fit the model based on all our data, without having to replace the missing data with any synthetic replacements.
 
@@ -44,12 +46,20 @@ We also impose a non-negativity constraint in all modes, as we expect the patter
 As the loss-landscape of the model is expected to be non-convex, the initial values of the model used in fitting could affect the final result, e.g. if we start close to a local minima, we could converge to that instead of the global minima.
 To ensure that we get a good/optimal model for the problem, we initialize the model multiple times, using random initialization, before we fit each of them.
 For further analysis we will always keep the best model, that is the model with the lowest loss after its final iteration.
+We will also use multiple initializations to illustrate the uniqueness of CP models.
+Indeed, we will keep all models performing (almost) as well as the optimal model found (for part 1 we will use $f \leq 1.02\cdot f_{opt}$, i.e. all models with loss less or equal to 2\% more than the best model) and use the \texttt{score} function from the Tensor Toolbox \cite{tentool} to measure compare the factors from the different runs.
+The \texttt{score} function computes the Factor Match Score (FMS) between two proposed model, where a score of 1 means that the models are identical \cite{unique}.
 
+The final important concept to discuss before the result, is how we find the correct/best model rank, i.e. what value should $R$ have in \eqref{eq:cp}.
+If the data we want to model have a natural number of factors, using this as the value of $R$ is likely to give the best and most interpretable model.
+In our case, the our data is measurements of mixtures containing a number of chemicals, hence having $R$ equal the number of distinctive chemicals would make sense.
+However, we do not know in advance how many chemicals there are in the mixtures,
+Hence, we need a way to figure out what rank is best/correct.
 
-
-\gaute{Explain using multiple inits}
-
-\gaute{Explain finding rank}
-
-\gaute{Explain uniqueness}
+As discussed in \textcite{corcondia}, an often used way to do this is looking at loss values and relative fit (RelFit) scores for different values of $R$, and choosing the point where the improvement of these two scores slows down.
+The relative fit is a measure of percentage of explained variation (see \textcite{corcondia}, page 277 for definition).
+An important observation to note is that both the loss and RelFit is likely to improve past the optimal $R$, the clue is to find where the improvement is radically slower.
+\textcite{corcondia} points out that due to it sometimes being hard to find this point, as well as it being expensive to train multiple models for each $R$ to get trustworthy results, this method could be bad.
+That said, in our case the models are relatively quick to fit, and we can confirm our pick for $R$ using factor plots, as will be discussed in the result section.
+Hence, it is not necessary to use a more complex method for finding $R$ such as the proposed CORCONDIA method \cite{corcondia}.
 
