@@ -1,19 +1,18 @@
-In this subsection we jointly analyze measurements from multiple sources, in order to reveal underlying patterns across them.
-The datasets consists of fluorescence spectroscopy EEMs $\mathcal{X} \in \mathbb{R}^{28 \times 251 \times 21}$, identical to part one, as well as nuclear magnetic resonance (NMR) spectroscopy $\mathcal{Y}\in \mathbb{R}^{28 \times 13324 \times 8}$ and liquid chromatography-mass spectrometry (LC-MS) measurements $Z \in \mathbb{R}^{28 \times 168}$, all from the same 28 mixtures.
+In this subsection, we jointly analyze measurements from multiple sources in order to reveal underlying patterns across them.
+The datasets consist of fluorescence spectroscopy EEMs $\mathcal{X} \in \mathbb{R}^{28 \times 251 \times 21}$, identical to part one, as well as nuclear magnetic resonance (NMR) spectroscopy $\mathcal{Y}\in \mathbb{R}^{28 \times 13324 \times 8}$ and liquid chromatography-mass spectrometry (LC-MS) measurements $Z \in \mathbb{R}^{28 \times 168}$, all from the same 28 mixtures.
 
 We will jointly analyze the three datasets using the AO-ADMM Data Fusion Framework 
-\cite{framework}, demonstrate the uniqueness property of the model by comparing different runs and finally plot the discovered factors.
+\cite{framework}, demonstrate the uniqueness property of the model by comparing different runs, and finally plot the discovered factors.
 
 
 \subsection*{Background and Method}
-As in part 1, we first need to handle the missing values in $\mathcal{X}$.
+As in part 1, our first task is to handle the missing values in $\mathcal{X}$.
 We note that neither $\mathcal{Y}$ nor $Z$ contain any missing values.
 While the \texttt{cp\_wopt} function we used in part 1 has a simple way of handling missing values internally by weighting the loss function, this is not the case for the method used in part 2.
-Hence we need to handle these missing values before fitting the models.
+Hence, we need to handle these missing values before fitting the models.
 There are various methods to do this, but we chose to use the best model from part 1 to replace the missing values.
-This seems like a good solution as the model gives replacement values based on the entire rest of the dataset, instead of a weighted average of some selected values as is the case for some alternatives.
-Instead of using $\ten{X}$ directly, we fitted the coupled model using $\ten{X}^*$ defined as in \eqref{eq:Xx} instead.
-In \eqref{eq:Xx}, $*$ denotes the element-wise Hadamard product, $\ten{\hat{X}}$ is the best $R=3$ model from part 1, $\ten{W}$ is defined as in \eqref{eq:weight_matrix}, and $\ten{W}'$ is defined as $\ten{W}'_{i,j,k} = 1 - \ten{W}_{i,j,k}$.
+This seems like a good solution, as the model gives replacement values based on the entire rest of the dataset, instead of a weighted average of some selected values, as is the case for some alternatives.
+Instead of using $\ten{X}$ directly, we fitted the coupled model using $\ten{X}^*$ defined as in \eqref{eq:Xx} instead, where $*$ denotes the element-wise Hadamard product, $\ten{\hat{X}}$ is the best $R=3$ model from part 1, $\ten{W}$ is defined as in \eqref{eq:weight_matrix}, and $\ten{W}'$ is defined as $\ten{W}'_{i,j,k} = 1 - \ten{W}_{i,j,k}$.
 \begin{equation}
     \ten{X}^* = \ten{W}*\ten{X} + \ten{W}' *\ten{\hat{X}}
     \label{eq:Xx}
@@ -21,12 +20,12 @@ In \eqref{eq:Xx}, $*$ denotes the element-wise Hadamard product, $\ten{\hat{X}}$
 
 We analyze the data jointly using the AO-ADMM Data Fusion Framework\cite{framework}.
 This framework utilizes Alternating Optimization (AO) and the Alternating Direction Method of Multipliers (ADMM).
-These algorithms are described in \textcite{framework}.
-We use the Frobenius tensor norm as loss function on all three matrices, and L-BFGS-B as optimization algorithm.
+For more information about these algorithms, see \textcite{framework}.
+We use the Frobenius tensor norm as the loss function on all three matrices, and L-BFGS-B as the optimization algorithm.
 
 
 
-Based on the information given about the underlying components, we use the coupling set-up described as case 3b in \textcite{framework}.
+Based on the information given about the underlying components, we use the coupling set-up described in case 3b in \textcite{framework}.
 As the total number of components is 6 (3 across all tensors, 1 across $\ten{Y}$ and $Z$, 1 only in $\ten{Y}$ and one only in $Z$), we let the matrix $\Delta_1 \in \R^{28 \times 6}$.
 The factor 28 comes from all 28 mixtures being coupled across all three tensors/matrices.
 By letting $C_{1,1}$ denote the factor matrix of the first mode in $\ten{X}$, $C_{2,1}$ the first mode in $\ten{Y}$, and $C_{3,1}$ in $Z$, we have $C_{i, 1} = \Delta_1 H_{i,1}$ for each $i=1,2,3$, where $H_{i,1}$ are defined for each $i$ as in \eqref{eq:hmat}.
@@ -59,11 +58,11 @@ By letting $C_{1,1}$ denote the factor matrix of the first mode in $\ten{X}$, $C
     \label{eq:hmat}
 \end{equation}
 
-Note that from the matrices in \eqref{eq:hmat}, we see that the factors for $\ten{X}$ will include only the first 3 components, for $\ten{Y}$ will include components 1 through 5, and for $Z$ will include components 1 to 4 and 6, as described in the task.
+Note that from the matrices in \eqref{eq:hmat}, we see that the $\ten{X}$ will be modeled by the first 3 factors, $\ten{Y}$ by components 1 through 5, and $Z$ by components 1 to 4 and 6, as described in the task.
 
 We also note that the matrix $C_{1,1} = \Delta_1 H_{1,1}$ will be of size $28 \times 3$, as expected.
-Similarly both $C_{2,1}$ and $C_{3,1}$ will be of size $28 \times 5$.
+Similarly, both $C_{2,1}$ and $C_{3,1}$ will be of size $28 \times 5$.
 
-Similarly as in part 1, we will perform multiple fitting runs with randomly drawn initial conditions in order to obtain the optimal model.
-We will also compare the models with (almost) equal loss as the best model, in order to demonstrate uniqueness of the models.
+As in part 1, we will perform multiple fitting runs with randomly drawn initial conditions in order to obtain the best model possible.
+We also compare the models that have (almost) equal loss to the loss of the best model, in order to demonstrate uniqueness of the factors.
 
